@@ -438,7 +438,7 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
                     map.putDouble("high", high);
                     map.putDouble("low", low);
                     map.putAsset("image", asset);
-                    new SendToDataLayerThread().start();
+                    new com.example.android.sunshine.app.SendToDataLayerThread(googleClient,request).start();
                 }
             }.execute();
         }
@@ -536,29 +536,5 @@ public class ForecastFragment extends Fragment implements LoaderManager.LoaderCa
 
     @Override
     public void onConnectionFailed(ConnectionResult connectionResult) { }
-
-
-
-    class SendToDataLayerThread extends Thread {
-
-        SendToDataLayerThread() {
-        }
-
-        public void run() {
-            Wearable.DataApi.putDataItem(googleClient, request.asPutDataRequest())
-                    .setResultCallback(new ResultCallback<DataApi.DataItemResult>() {
-                        @Override
-                        public void onResult(DataApi.DataItemResult dataItemResult) {
-                            if (dataItemResult.getStatus().isSuccess()) {
-                                Log.e("myTag", "Message" + request.getDataMap().toString());
-                            }
-                            if (!dataItemResult.getStatus().isSuccess()) {
-                                Log.e("myTag", "buildWatchOnlyNotification(): Failed to set the data, "
-                                        + "status: " + dataItemResult.getStatus().getStatusCode());
-                            }
-                        }
-                    });
-        }
-    }
 
 }

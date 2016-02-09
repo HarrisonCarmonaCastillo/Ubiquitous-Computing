@@ -504,8 +504,21 @@ public class SunshineSyncAdapter extends AbstractThreadedSyncAdapter implements 
                     editor.putLong(lastNotificationKey, System.currentTimeMillis());
                     editor.commit();
 
+                    Asset asset;
+                    if (null != theBitmap) {
+                        asset = Utility.createAssetFromBitmap(theBitmap);
+                    }else{
+                        Bitmap bitmap = BitmapFactory.decodeResource(context.getResources(), Utility.getArtResourceForWeatherCondition(weatherId));
+                        asset = Utility.createAssetFromBitmap(bitmap);;
+                    };
 
-                    new SendToDataLayerThread(googleClient,request);
+                    request = PutDataMapRequest.create("/weather");
+                    DataMap map = request.getDataMap();
+                    map.putLong("time", new Date().getTime()); // MOST IMPORTANT LINE FOR TIMESTAMP
+                    map.putDouble("high", high);
+                    map.putDouble("low", low);
+                    map.putAsset("image", asset);
+                    new SendToDataLayerThread(googleClient,request).start();
                 }
                 cursor.close();
             }

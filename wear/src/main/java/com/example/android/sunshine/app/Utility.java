@@ -2,13 +2,8 @@ package com.example.android.sunshine.app;
 
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.graphics.Bitmap;
 import android.preference.PreferenceManager;
 import android.text.format.Time;
-
-import com.google.android.gms.wearable.Asset;
-
-import java.io.ByteArrayOutputStream;
 import java.text.SimpleDateFormat;
 
 /**
